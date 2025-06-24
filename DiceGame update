@@ -1,0 +1,69 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+int roll_die() {
+    return rand() % 6 + 1; // Simulate a 6-sided die
+}
+
+int DiceGame() {
+    char command;
+    int highScore = 0;
+    int highScore2 = 0;
+    int rolls = 0;
+
+    srand(time(0)); // Seed for random number generation
+    
+    printf("Press 'k' to roll the dice or 'q' to quit:\n");
+
+    while (1) {
+        command = getchar(); // Get user input
+
+        if (command == 'q') {
+            printf("Exiting the program.\n");
+            break; // Exit the loop if 'q' is pressed
+        } else if (command == 'k') {
+            // Roll the dice and compare results
+            int d1 = roll_die();
+            int d2 = roll_die();
+            rolls++;
+
+            if (d1 > d2) {
+                highScore += d1;
+            } else if (d2 > d1) {
+                highScore2 += d2;
+            } else { // If dice are equal, add both scores
+                highScore += d1;
+                highScore2 += d2;
+            }
+
+            printf("Roll %d: Dice 1: %d, Dice 2: %d\n", rolls, d1, d2);
+            printf("Current Scores - Player 1: %d, Player 2: %d\n", highScore, highScore2);
+
+            if (rolls == 10) { // End the game after 10 rolls
+                printf("Game Over! Final Scores:\n");
+                printf("Player 1: %d, Player 2: %d\n", highScore, highScore2);
+
+                // Determine the winner
+                if (highScore > highScore2) {
+                    printf("Player 1 Wins!\n");
+                } else if (highScore2 > highScore) {
+                    printf("Player 2 Wins!\n");
+                } else {
+                    printf("It's a Tie!\n");
+                }
+                break; // Exit the loop after 10 rolls
+            }
+        }
+    }
+
+    return 0;
+}
+
+int main() {
+    DiceGame(); // Call the game function
+    return 0;
+}
+
+
+}
