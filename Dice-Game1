@@ -1,0 +1,42 @@
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+int roll_die() {
+    return rand() % 6 + 1;
+}
+
+int DiceGame() {
+    int highScore = 0;
+    int highScore2 = 0;
+    int rolls = 0;
+    srand(time(0));
+
+    do {
+        int d1 = roll_die();
+        int d2 = roll_die();
+        rolls++;
+
+        if (d1 > d2) {
+            highScore += d1;
+        } else if (d2 > d1) {
+            highScore2 += d2;
+        } else {
+            highScore += d1;
+            highScore2 += d2;
+        }
+
+        printf("Roll %d: Dice 1: %d, Dice 2: %d\n", rolls, d1, d2);
+        printf("Current Scores - Player 1: %d, Player 2: %d\n", highScore, highScore2);
+
+    } while (rolls != 10);
+
+    printf("Final Scores - Player 1: %d, Player 2: %d\n", highScore, highScore2);
+    return 0;
+}
+
+int main() {
+    DiceGame();
+    return 0;
