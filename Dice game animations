@@ -1,0 +1,84 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <unistd.h> // For usleep() function
+
+#define DELAY 100000 // Microseconds delay for animation
+#define ANIMATION_FRAMES 10 // Number of animation frames
+
+// Function to simulate a 6-sided die roll
+int roll_die() {
+    return rand() % 6 + 1;
+}
+
+// Function to animate the die roll
+int animate_die() {
+    int result = 0;
+    for (int i = 0; i < ANIMATION_FRAMES; i++) {
+        result = roll_die(); // Generate a random dice value
+        printf("\rRolling... [%d]  ", result); // Print dice value on the same line
+        fflush(stdout); // Force output to the console
+        usleep(DELAY);  // Small delay to simulate animation
+    }
+    return result; // Return the final value
+}
+
+// Main Dice Game function
+void DiceGame() {
+    char command;
+    int highScore = 0, highScore2 = 0, rolls = 0, maxRolls = 10;
+
+    srand(time(0)); // Seed the random number generator
+
+    printf("Welcome to the Animated Dice Game!\n");
+    printf("Press 'k' to roll the dice or 'q' to quit.\n");
+
+    while (rolls < maxRolls) {
+        scanf(" %c", &command); // Get user input
+
+        if (command == 'q') {
+            printf("Exiting the program.\n");
+            return;
+        } else if (command == 'k') {
+            printf("Rolling Dice 1...\n");
+            int d1 = animate_die(); // Animate die roll for Player 1
+            printf("\nRolling Dice 2...\n");
+            int d2 = animate_die(); // Animate die roll for Player 2
+
+            rolls++; // Increment the roll count
+
+            // Update scores based on dice values
+            if (d1 > d2) {
+                highScore += d1;
+            } else if (d2 > d1) {
+                highScore2 += d2;
+            } else {
+                highScore += d1;
+                highScore2 += d2;
+            }
+
+            // Print the results of the roll
+            printf("\nRoll %d Results: Dice 1: %d, Dice 2: %d\n", rolls, d1, d2);
+            printf("Current Scores - Player 1: %d, Player 2: %d\n", highScore, highScore2);
+            printf("\nPress 'k' to roll again or 'q' to quit.\n");
+        } else {
+            printf("Invalid input! Press 'k' to roll or 'q' to quit.\n");
+        }
+    }
+
+    // Final results after 10 rolls
+    printf("\nGame Over! Final Scores:\n");
+    printf("Player 1: %d, Player 2: %d\n", highScore, highScore2);
+    if (highScore > highScore2) {
+        printf("Player 1 Wins!\n");
+    } else if (highScore2 > highScore) {
+        printf("Player 2 Wins!\n");
+    } else {
+        printf("It's a Tie!\n");
+    }
+}
+
+int main() {
+    DiceGame();
+    return 0;
+}
